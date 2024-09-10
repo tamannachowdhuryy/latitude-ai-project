@@ -1,0 +1,399 @@
+CONFIG
+├── data
+│   └── _target_: pointbev.data.datamodule.NuScenesDatamodule                                                           
+│       version: mini                                                                                                   
+│       dataroot: /mnt/d/GitHub/PointBeV/data//nuScenes                                                                 
+│       hdmaproot: /mnt/d/GitHub/PointBeV/data//nuscenes_processed_map                                                  
+│       is_lyft: false                                                                                                  
+│       grid:                                                                                                           
+│         xbound:                                                                                                       
+│         - -50.0                                                                                                       
+│         - 50.0                                                                                                        
+│         - 0.5                                                                                                         
+│         ybound:                                                                                                       
+│         - -50.0                                                                                                       
+│         - 50.0                                                                                                        
+│         - 0.5                                                                                                         
+│         zbound:                                                                                                       
+│         - -10.0                                                                                                       
+│         - 10.0                                                                                                        
+│         - 20.0                                                                                                        
+│         dbound:                                                                                                       
+│         - 4.0                                                                                                         
+│         - 45.0                                                                                                        
+│         - 1.0                                                                                                         
+│       img_loader:                                                                                                     
+│         _target_: pointbev.utils.imgs.ImageLoader                                                                     
+│         mode: PIL                                                                                                     
+│       img_params:                                                                                                     
+│         H: 900                                                                                                        
+│         W: 1600                                                                                                       
+│         cams:                                                                                                         
+│         - CAM_FRONT_LEFT                                                                                              
+│         - CAM_FRONT                                                                                                   
+│         - CAM_FRONT_RIGHT                                                                                             
+│         - CAM_BACK_LEFT                                                                                               
+│         - CAM_BACK                                                                                                    
+│         - CAM_BACK_RIGHT                                                                                              
+│         Ncams: 6                                                                                                      
+│         min_visibility: 2                                                                                             
+│         update_intrinsics: true                                                                                       
+│         downsample: 8                                                                                                 
+│         scale:                                                                                                        
+│         - 0.294                                                                                                       
+│         - 0.308                                                                                                       
+│         zoom_lim:                                                                                                     
+│         - 0.95                                                                                                        
+│         - 1.05                                                                                                        
+│         final_dim:                                                                                                    
+│         - 224                                                                                                         
+│         - 480                                                                                                         
+│         rot_lim:                                                                                                      
+│         - -2.5                                                                                                        
+│         - 2.5                                                                                                         
+│         crop_up_pct:                                                                                                  
+│         - 0.83                                                                                                        
+│         - 0.83                                                                                                        
+│         rand_flip: false                                                                                              
+│       coeffs:                                                                                                         
+│         bev_aug:                                                                                                      
+│           trans_rot:                                                                                                  
+│           - 30.0                                                                                                      
+│           - 20.0                                                                                                      
+│           - 0.0                                                                                                       
+│           - 20.0                                                                                                      
+│           - 0.0                                                                                                       
+│           - 0.0                                                                                                       
+│       batch_size: 1                                                                                                   
+│       valid_batch_size: 1                                                                                             
+│       num_workers: 16                                                                                                 
+│       pin_memory: true                                                                                                
+│       prefetch_factor: 2                                                                                              
+│       train_drop_last: true                                                                                           
+│       train_shuffle: true                                                                                             
+│       normalize_img: true                                                                                             
+│       keep_input_binimg: true                                                                                         
+│       keep_input_centr_offs: true                                                                                     
+│       keep_input_detection: false                                                                                     
+│       keep_input_hdmap: false                                                                                         
+│       hdmap_names:                                                                                                    
+│       - drivable_area                                                                                                 
+│       keep_input_persp: false                                                                                         
+│       keep_input_sampling: false                                                                                      
+│       keep_input_offsets_map: false                                                                                   
+│       keep_input_lidar: false                                                                                         
+│       save_folder: ''                                                                                                 
+│       visualise_mode: false                                                                                           
+│       kernel_scales:                                                                                                  
+│       - 1                                                                                                             
+│       cam_T_P:                                                                                                        
+│       - - 0                                                                                                           
+│         - 0                                                                                                           
+│       bev_T_P:                                                                                                        
+│       - - 0                                                                                                           
+│         - 0                                                                                                           
+│       mode_ref_cam_T: present                                                                                         
+│       only_object_center_in: false                                                                                    
+│       filters_cat:                                                                                                    
+│       - vehicle                                                                                                       
+│                                                                                                                       
+├── model
+│   └── loss_kwargs:                                                                                                    
+│         with_binimg: true                                                                                             
+│         pos_weight: 2.13                                                                                              
+│         with_hdmap: false                                                                                             
+│         hdmap_names:                                                                                                  
+│         - drivable_area                                                                                               
+│         with_centr_offs: true                                                                                         
+│         compress_persp: false                                                                                         
+│         segm_type:                                                                                                    
+│           cls: BCELoss                                                                                                
+│           kwargs:                                                                                                     
+│             pos_weight: 2.13                                                                                          
+│       weights_kwargs:                                                                                                 
+│         mode: learned                                                                                                 
+│       train_kwargs:                                                                                                   
+│         train_loss_frequency: 200                                                                                     
+│         train_visu_frequency: 1000                                                                                    
+│         train_visu_epoch_frequency: 10                                                                                
+│         train_visu_imgs: true                                                                                         
+│       val_kwargs:                                                                                                     
+│         val_visu_frequency: 250                                                                                       
+│         val_visu_imgs: true                                                                                           
+│         val_calculate_losses: false                                                                                   
+│       metric_kwargs:                                                                                                  
+│         with_dynamic_tag: false                                                                                       
+│         with_sampler: false                                                                                           
+│         with_distance: false                                                                                          
+│         only_val: true                                                                                                
+│         track_pts: false                                                                                              
+│         track_mem: false                                                                                              
+│         track_pts_thresh: false                                                                                       
+│         pts_thresh: 0.0                                                                                               
+│       temporal_kwargs:                                                                                                
+│         cam_T_P:                                                                                                      
+│         - - 0                                                                                                         
+│           - 0                                                                                                         
+│         bev_T_P:                                                                                                      
+│         - - 0                                                                                                         
+│           - 0                                                                                                         
+│       grid:                                                                                                           
+│         xbound:                                                                                                       
+│         - -50.0                                                                                                       
+│         - 50.0                                                                                                        
+│         - 0.5                                                                                                         
+│         ybound:                                                                                                       
+│         - -50.0                                                                                                       
+│         - 50.0                                                                                                        
+│         - 0.5                                                                                                         
+│         zbound:                                                                                                       
+│         - -10.0                                                                                                       
+│         - 10.0                                                                                                        
+│         - 20.0                                                                                                        
+│         dbound:                                                                                                       
+│         - 4.0                                                                                                         
+│         - 45.0                                                                                                        
+│         - 1.0                                                                                                         
+│       _target_: pointbev.models.BasicTrainer                                                                          
+│       net:                                                                                                            
+│         backbone:                                                                                                     
+│           _target_: pointbev.models.img_encoder.EfficientNet                                                          
+│           checkpoint_path: /mnt/d/GitHub/PointBeV/backbones//                                                         
+│           version: b4                                                                                                 
+│           downsample: 8                                                                                               
+│         neck:                                                                                                         
+│           _target_: pointbev.models.img_encoder.AGPNeck                                                               
+│           align_res_layer:                                                                                            
+│             _target_: pointbev.models.img_encoder.neck.AlignRes                                                       
+│             mode: upsample                                                                                            
+│             scale_factors:                                                                                            
+│             - 1                                                                                                       
+│             - 2                                                                                                       
+│             in_channels:                                                                                              
+│             - 56                                                                                                      
+│             - 160                                                                                                     
+│           prepare_c_layer:                                                                                            
+│             _target_: pointbev.models.img_encoder.neck.PrepareChannel                                                 
+│             in_channels:                                                                                              
+│             - 56                                                                                                      
+│             - 160                                                                                                     
+│             interm_c: 128                                                                                             
+│             out_c: 128                                                                                                
+│             mode: doubleconv                                                                                          
+│             tail_mode: conv2d                                                                                         
+│         heads:                                                                                                        
+│           _target_: pointbev.models.heads.BEVConvHead                                                                 
+│           shared_out_c: 128                                                                                           
+│           with_centr_offs: true                                                                                       
+│           with_binimg: true                                                                                           
+│           with_hdmap: false                                                                                           
+│           hdmap_names:                                                                                                
+│           - drivable_area                                                                                             
+│           dense_input: false                                                                                          
+│         _target_: pointbev.models.PointBeV                                                                            
+│         in_shape:                                                                                                     
+│           projector:                                                                                                  
+│           - 200                                                                                                       
+│           - 200                                                                                                       
+│           - 8                                                                                                         
+│           spatial_bounds:                                                                                             
+│           - -49.75                                                                                                    
+│           - 49.75                                                                                                     
+│           - -49.75                                                                                                    
+│           - 49.75                                                                                                     
+│           - -3.375                                                                                                    
+│           - 5.375                                                                                                     
+│         voxel_ref: spatial                                                                                            
+│         in_c:                                                                                                         
+│           neck:                                                                                                       
+│           - 56                                                                                                        
+│           - 160                                                                                                       
+│           vt: 128                                                                                                     
+│         out_c:                                                                                                        
+│           base_neck: 128                                                                                              
+│           N_group: 1                                                                                                  
+│           neck: 128                                                                                                   
+│           vt: 128                                                                                                     
+│           autoencoder: 128                                                                                            
+│         sampled_kwargs:                                                                                               
+│           N_coarse: 2500                                                                                              
+│           mode: rnd_pillars                                                                                           
+│           val_mode: dense                                                                                             
+│           patch_size: 1                                                                                               
+│           compress_height: false                                                                                      
+│           with_fine: true                                                                                             
+│           valid_fine: false                                                                                           
+│           N_fine: 2500                                                                                                
+│           N_anchor: 100                                                                                               
+│           fine_patch_size: 9                                                                                          
+│           fine_thresh: 0.1                                                                                            
+│           temp_thresh: -5                                                                                             
+│         projector:                                                                                                    
+│           _target_: pointbev.models.projector.CamProjector                                                            
+│           spatial_bounds:                                                                                             
+│           - -49.75                                                                                                    
+│           - 49.75                                                                                                     
+│           - -49.75                                                                                                    
+│           - 49.75                                                                                                     
+│           - -3.375                                                                                                    
+│           - 5.375                                                                                                     
+│           voxel_ref: spatial                                                                                          
+│           z_value_mode: zero                                                                                          
+│         autoencoder:                                                                                                  
+│           _target_: pointbev.models.autoencoder.SparseUNet                                                            
+│           in_c: 128                                                                                                   
+│           with_tail_conv: false                                                                                       
+│           with_large_kernels: false                                                                                   
+│           with_decoder_bias: false                                                                                    
+│         view_transform:                                                                                               
+│           _target_: pointbev.models.view_transform.GridSampleVT                                                       
+│           voxel_shape:                                                                                                
+│           - 200                                                                                                       
+│           - 200                                                                                                       
+│           - 8                                                                                                         
+│           in_c: 128                                                                                                   
+│           out_c: 128                                                                                                  
+│           N_group: 1                                                                                                  
+│           grid_sample_mode: sparse_optim                                                                              
+│           coordembd:                                                                                                  
+│             _target_: pointbev.models.layers.attention.PositionalEncodingMap                                          
+│             m: 8                                                                                                      
+│             with_mlp: true                                                                                            
+│             in_c: 3                                                                                                   
+│             out_c: 128                                                                                                
+│             num_hidden_layers: 2                                                                                      
+│             mid_c: 256                                                                                                
+│           heightcomp:                                                                                                 
+│             comp:                                                                                                     
+│               classname: pointbev.models.layers.MLP                                                                   
+│               mode: mlp                                                                                               
+│               in_c: 128                                                                                               
+│               mid_c: 128                                                                                              
+│               out_c: 128                                                                                              
+│               num_layers: 4                                                                                           
+│               as_conv: true                                                                                           
+│           input_sparse: true                                                                                          
+│           return_sparse: true                                                                                         
+│       optimizer:                                                                                                      
+│         _target_: torch.optim.AdamW                                                                                   
+│         _partial_: true                                                                                               
+│         lr: 0.0003                                                                                                    
+│         weight_decay: 1.0e-07                                                                                         
+│       scheduler:                                                                                                      
+│         classname: torch.optim.lr_scheduler.OneCycleLR                                                                
+│         max_lr: -1                                                                                                    
+│         total_steps: -1                                                                                               
+│         div_factor: 3                                                                                                 
+│         final_div_factor: 20                                                                                          
+│         pct_start: 0.05                                                                                               
+│         cycle_momentum: false                                                                                         
+│         anneal_strategy: linear                                                                                       
+│         interval: step                                                                                                
+│       name: debug                                                                                                     
+│                                                                                                                       
+├── callbacks
+│   └── rich_progress_bar:                                                                                              
+│         _target_: pytorch_lightning.callbacks.RichProgressBar                                                         
+│         refresh_rate: 20                                                                                              
+│       learning_rate_monitor:                                                                                          
+│         _target_: pytorch_lightning.callbacks.LearningRateMonitor                                                     
+│         logging_interval: step                                                                                        
+│       model_checkpoint:                                                                                               
+│         _target_: pytorch_lightning.callbacks.ModelCheckpoint                                                         
+│         verbose: false                                                                                                
+│         save_top_k: 1                                                                                                 
+│         save_weights_only: false                                                                                      
+│         every_n_train_steps: null                                                                                     
+│         train_time_interval: null                                                                                     
+│         every_n_epochs: null                                                                                          
+│         save_on_train_epoch_end: null                                                                                 
+│         dirpath: /mnt/d/GitHub/PointBeV/logs/PointBeV/debug/runs/2024-09-08_16-56-30/checkpoints                      
+│         monitor: val_bev_metric_iou_Time_Pose_T0_P0                                                                   
+│         filename: '{epoch:03d}_{val_bev_metric_iou_Time_Pose_T0_P0:.4f}'                                              
+│         mode: max                                                                                                     
+│         save_last: true                                                                                               
+│         auto_insert_metric_name: false                                                                                
+│       model_summary:                                                                                                  
+│         _target_: pytorch_lightning.callbacks.RichModelSummary                                                        
+│         max_depth: 3                                                                                                  
+│                                                                                                                       
+├── logger
+│   └── wandb:                                                                                                          
+│         _target_: pytorch_lightning.loggers.wandb.WandbLogger                                                         
+│         id: null                                                                                                      
+│         anonymous: null                                                                                               
+│         project: lightning-hydra-template                                                                             
+│         log_model: false                                                                                              
+│         prefix: ''                                                                                                    
+│         group: ''                                                                                                     
+│         tags: []                                                                                                      
+│         job_type: ''                                                                                                  
+│         save_dir: /mnt/d/GitHub/PointBeV/logs//PointBeV/debug/runs/2024-09-08_16-56-30                                
+│         name: debug                                                                                                   
+│         version: ''                                                                                                   
+│         offline: true                                                                                                 
+│       tensorboard:                                                                                                    
+│         _target_: pytorch_lightning.loggers.tensorboard.TensorBoardLogger                                             
+│         log_graph: false                                                                                              
+│         prefix: ''                                                                                                    
+│         save_dir: /mnt/d/GitHub/PointBeV/logs//PointBeV/debug/runs/2024-09-08_16-56-30                                
+│         default_hp_metric: false                                                                                      
+│         name: tb_logs                                                                                                 
+│                                                                                                                       
+├── trainer
+│   └── _target_: pytorch_lightning.trainer.Trainer                                                                     
+│       default_root_dir: /mnt/d/GitHub/PointBeV/logs/PointBeV/debug/runs/2024-09-08_16-56-30                           
+│       min_epochs: 1                                                                                                   
+│       deterministic: false                                                                                            
+│       strategy: ddp                                                                                                   
+│       max_epochs: 1000                                                                                                
+│       num_sanity_val_steps: 1                                                                                         
+│       overfit_batches: 1                                                                                              
+│       check_val_every_n_epoch: 20                                                                                     
+│       log_every_n_steps: 1                                                                                            
+│       gradient_clip_val: 5.0                                                                                          
+│       accelerator: gpu                                                                                                
+│       devices: 1                                                                                                      
+│       num_nodes: 1                                                                                                    
+│       sync_batchnorm: true                                                                                            
+│                                                                                                                       
+├── paths
+│   └── root_dir: /mnt/d/GitHub/PointBeV                                                                                
+│       data_dir: /mnt/d/GitHub/PointBeV/data/                                                                          
+│       log_dir: /mnt/d/GitHub/PointBeV/logs/                                                                           
+│       backbone_dir: /mnt/d/GitHub/PointBeV/backbones/                                                                 
+│       output_dir: /mnt/d/GitHub/PointBeV/logs/PointBeV/debug/runs/2024-09-08_16-56-30                                 
+│       work_dir: /mnt/d/GitHub/PointBeV                                                                                
+│                                                                                                                       
+├── extras
+│   └── ignore_warnings: false                                                                                          
+│       enforce_tags: true                                                                                              
+│       print_config: true                                                                                              
+│       freeze: []                                                                                                      
+│       load: []                                                                                                        
+│       desc: ''                                                                                                        
+│                                                                                                                       
+├── task_name
+│   └── debug                                                                                                           
+├── tags
+│   └── ['dev']                                                                                                         
+├── train
+│   └── True                                                                                                            
+├── test
+│   └── False                                                                                                           
+├── profile
+│   └── False                                                                                                           
+├── ckpt
+│   └── path: null                                                                                                      
+│       model:                                                                                                          
+│         freeze: null                                                                                                  
+│         load: all                                                                                                     
+│                                                                                                                       
+├── seed
+│   └── None                                                                                                            
+├── log_every_n_steps
+│   └── 50                                                                                                              
+└── flags
+    └── debug: true                                                                                                     
+        val_sparse: false                                                                                               
+                                                                                                                        
